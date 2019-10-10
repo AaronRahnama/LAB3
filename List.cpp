@@ -28,9 +28,8 @@ void List::InitializeList(int playerC) {
 		current = head;
 		// if list is empty initialize it
 		if (current == nullptr) {
-			head = n;
+			end = head = n;
 			head->next = head;
-			end = head;
 		}
 		// if list isnt empty add node to begining and make end of list point to begining
 		else if (current != nullptr) {
@@ -44,17 +43,24 @@ void List::InitializeList(int playerC) {
 
 
 void List::delUsers(int delval) {
-	current = head;
+	nodePTR del;
+	nodePTR before = nullptr;
 	while (size != 1) {
-		for (int i = 0; i < delval -1; i++)
+		for (int i = 0; i < delval; i++) {
+			before = current;
 			current = current->next;
-		nodePTR delnext = current->next;
-		current->next = delnext->next;
-		cout << "removing " << delnext->name << '\t' << delnext->number << endl;
-		delete delnext;
-		--size;
+		}
+		del = current;
+		before->next = del->next;
+		cout << "Removing " << del->name << " from the game. " << --size << " players left." << endl;
+		current = current->next;
+		delete del;
+		del = nullptr;
 	}
-	cout << "Last man standing is " << current->name << '\t' << current->number << endl;
+	cout << "Last player is " << current->name << '.' << endl;
+	delete current;
+	current = nullptr;
+	size = 0;
 }
 
 //void List::printPlayers() {
